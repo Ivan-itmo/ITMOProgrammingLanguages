@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <Platforms>AnyCPU;x64</Platforms>
+    <RunPostBuildEvent>Always</RunPostBuildEvent>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="pythonnet" Version="3.0.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\InteropPyModule\InteropPyModule.vcxproj" />
+    <ProjectReference Include="..\InteropFastLib\InteropFastLib.vcxproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="script.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="xcopy /Y /D &quot;$(SolutionDir)$(Platform)\$(Configuration)\InteropFastLib.dll&quot; &quot;$(TargetDir)&quot;&#xD;&#xA;xcopy /Y /D &quot;$(SolutionDir)$(Platform)\$(Configuration)\interop_lab.pyd&quot; &quot;$(TargetDir)&quot;" />
+  </Target>
+
+</Project>
